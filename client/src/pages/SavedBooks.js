@@ -3,6 +3,7 @@ import { useQuery, useMutation } from '@apollo/client';
 import { SINGLE_USER } from '../utils/queries';
 import { DELETE_BOOK } from '../utils/mutations';
 import Auth from '../utils/auth';
+import { removeBookId } from '../utils/localStorage';
 
 import {
 	Jumbotron,
@@ -45,6 +46,8 @@ const SavedBooks = () => {
 			});
 
 			setUserData(data.deleteBook);
+			// upon success, remove book's id from localStorage
+			removeBookId(bookId);
 		} catch (err) {
 			console.error(err);
 		}
