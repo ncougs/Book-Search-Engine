@@ -47,6 +47,34 @@ const resolvers = {
 			//return token and user
 			return { token, user };
 		},
+
+		//login to user account
+		login: async (parent, { username, email, password }) => {
+			//default error message
+			const errorMessage = 'Incorrect username, email or password';
+
+			//find the username within our db - Usernames are unqiue
+			const user = await User.findOne({ $or: [{ username }, { email }] });
+
+			//no username found, return error
+			if (!user) {
+				throw new AuthenticationError(errorMessage);
+			}
+
+			//check plain text password with hashed db password
+			const validPassword = await user.isCorrectPassword(password);
+
+			//passwords do not match, return error
+			if (!validPassword) {
+				throw new AuthenticationError(errorMessage);
+			}
+
+			//create user token
+			const token = signToken(user);
+
+			//return token and user
+			return { token, user };
+		},
 	},
 };
 
