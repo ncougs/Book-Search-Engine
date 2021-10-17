@@ -9,6 +9,19 @@ const resolvers = {
 			return User.find({});
 		},
 
+		//find single user
+		getSingleUser: async (parent, { id, username }) => {
+			const foundUser = await User.findOne({
+				$or: [{ _id: id }, { username }],
+			});
+
+			if (!foundUser) {
+				throw new AuthenticationError(`Cannot find user`);
+			}
+
+			return foundUser;
+		},
+
 		//find all books
 		books: async () => {
 			return Book.find({});

@@ -25,6 +25,7 @@ const typeDefs = gql`
 
 	type Query {
 		users: [User]
+		getSingleUser(id: ID, username: String): User
 		books: [Book]
 	}
 
