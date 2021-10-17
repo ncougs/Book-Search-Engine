@@ -21,11 +21,6 @@ const resolvers = {
 
 			return foundUser;
 		},
-
-		//find all books
-		books: async () => {
-			return Book.find({});
-		},
 	},
 
 	Mutation: {
@@ -74,6 +69,32 @@ const resolvers = {
 
 			//return token and user
 			return { token, user };
+		},
+
+		//save book to users `savedBooks` field
+		saveBook: async (
+			parent,
+			{ userID, authors, description, bookId, image, link, title }
+		) => {
+			const book = {
+				authors,
+				description,
+				bookId,
+				image,
+				link,
+				title,
+			};
+
+			console.log(userID, book);
+
+			const updatedUser = await User.findOneAndUpdate(
+				{ _id: userID },
+				{ $addToSet: { savedBooks: book } },
+				{ new: true, runValidators: true }
+			);
+
+			//return updated user
+			return updatedUser;
 		},
 	},
 };
