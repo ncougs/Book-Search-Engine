@@ -85,12 +85,22 @@ const resolvers = {
 				title,
 			};
 
-			console.log(userID, book);
-
 			const updatedUser = await User.findOneAndUpdate(
 				{ _id: userID },
 				{ $addToSet: { savedBooks: book } },
 				{ new: true, runValidators: true }
+			);
+
+			//return updated user
+			return updatedUser;
+		},
+
+		//delete book from users `savedBooks` field
+		deleteBook: async (parent, { userID, bookId }) => {
+			const updatedUser = await User.findOneAndUpdate(
+				{ _id: userID },
+				{ $pull: { savedBooks: { bookId } } },
+				{ new: true }
 			);
 
 			//return updated user
