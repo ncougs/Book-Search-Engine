@@ -84,7 +84,6 @@ const resolvers = {
 				link,
 				title,
 			};
-
 			const updatedUser = await User.findOneAndUpdate(
 				{ _id: userID },
 				{ $addToSet: { savedBooks: book } },
