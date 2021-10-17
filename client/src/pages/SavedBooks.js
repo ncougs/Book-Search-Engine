@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useQuery, useLazyQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { SINGLE_USER } from '../utils/queries';
+import { DELETE_BOOK } from '../utils/mutations';
 import Auth from '../utils/auth';
 
 import {
@@ -28,23 +29,25 @@ const SavedBooks = () => {
 		setUserData(userData);
 	});
 
+	const [deleteBook] = useMutation(DELETE_BOOK);
+
 	const handleDeleteBook = async (bookId) => {
-		// const token = Auth.loggedIn() ? Auth.getToken() : null;
-		// if (!token) {
-		// 	return false;
-		// }
-		// try {
-		// 	const response = await deleteBook(bookId, token);
-		// 	if (!response.ok) {
-		// 		throw new Error('something went wrong!');
-		// 	}
-		// 	const updatedUser = await response.json();
-		// 	setUserData(updatedUser);
-		// 	// upon success, remove book's id from localStorage
-		// 	removeBookId(bookId);
-		// } catch (err) {
-		// 	console.error(err);
-		// }
+		const {
+			data: { _id },
+		} = Auth.getProfile();
+
+		try {
+			const { data } = await deleteBook({
+				variables: {
+					userID: _id,
+					bookId,
+				},
+			});
+
+			setUserData(data.deleteBook);
+		} catch (err) {
+			console.error(err);
+		}
 	};
 
 	// if data isn't here yet, say so
