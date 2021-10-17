@@ -1,5 +1,9 @@
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 # Book Search Engine
+
+## Link to Deployed Application
+
+https://mern-stack-book-search-engine.herokuapp.com/
  
 ## Description
 The app was built using a MERN stack with a React front end, MongoDB database, Node.js/Express.js server and an Apollo Server that uses GraphQL queries and mutations to fetch and modify data.
